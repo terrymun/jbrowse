@@ -143,7 +143,9 @@ constructor: function(params) {
                        // figure out our initial location
                        var initialLocString = thisB._initialLocation();
                        var initialLoc = Util.parseLocString( initialLocString );
-                       this.refSeq = initialLoc && initialLoc.ref || this.refSeq;
+                       if (initialLoc && initialLoc.ref && thisB.allRefs[initialLoc.ref]) {
+                           thisB.refSeq = thisB.allRefs[initialLoc.ref];                           
+                       }
 
                        thisB.initView().then( function() {
                            Touch.loadTouch(); // init touch device support
