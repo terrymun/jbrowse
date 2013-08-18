@@ -1339,7 +1339,7 @@ passMilestone: function( name, result ) {
  * Return true if we have reached the named milestone, false otherwise.
  */
 reachedMilestone: function( name ) {
-    return this._getDeferred(name).fired >= 0;
+    return this._getDeferred(name).isResolved();
 },
 
 
