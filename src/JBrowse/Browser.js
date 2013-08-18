@@ -778,6 +778,35 @@ browserMeta: function() {
     return about;
 },
 
+registerExtraFileDriver: function( filedriverClass ) {
+    var extraDrivers = this.getExtraFileDrivers();
+    extraDrivers.push( filedriverClass );
+}, 
+
+getExtraFileDrivers: function( args ) {
+    if (! this._extraFileDrivers) {
+        this._extraFileDrivers = [];
+    }
+    return this._extraFileDrivers;
+}, 
+
+/* placeholder for loading of default file drivers similar to how "extra" file drivers are loaded from plugins
+ getKnownFileDrivers: function() {
+    if (! this._knownFileDrivers) {
+        this._knownFileDrivers = [
+            'JBrowse/View/FileDialog/TrackList/BAMDriver',
+            'JBrowse/View/FileDialog/TrackList/BigWigDriver',
+            'JBrowse/View/FileDialog/TrackList/GFF3Driver',
+            'JBrowse/View/FileDialog/TrackList/VCFTabixDriver' ];
+    }
+    return this._knownFileDrivers;
+},
+ registerFileDriver: function( filedriverClass ) {
+     var fileDrivers = this.getKnownFileDrivers();
+     fileDrivers.push( filedriverClass );
+ }
+*/
+
 /**
  * Track type registry, used by GUI elements that need to offer
  * options regarding selecting track types.  Can register a track

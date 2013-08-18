@@ -35,7 +35,17 @@ constructor: function( args ) {
     this.fileDialog = args.dialog;
     this.domNode = dom.create('div', { className: 'trackList', innerHTML: 'track list!' });
     this.types = [ new BAMDriver(), new BigWigDriver(), new GFF3Driver(), new VCFTabixDriver() ];
-
+    var extraDrivers = this.browser.getExtraFileDrivers();
+    if (extraDrivers) {
+        for (var i=0; i<extraDrivers.length; i++) {
+            var driverClass = extraDrivers[i];
+            var driver = new driverClass();
+            // extra drivers are added to the front of the driver array, 
+            // so for a given resource type (for example "gff3"), 
+            // any added drivers take precedence over standard drivers (or other extra drivers added previously)
+            this.types.unshift(driver);
+        }
+    }
     this._updateDisplay();
 },
 
