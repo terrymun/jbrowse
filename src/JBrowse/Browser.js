@@ -1507,7 +1507,9 @@ addRefseqs: function( refSeqs ) {
                               });
         }.call(this);
 
-    this.refSeq = this.refSeq || this.allRefs[ this.refSeqOrder[0] ];
+    var refCookie = this.cookie('refseq');
+    this.refSeq = this.refSeq || this.allRefs[refCookie] || this.allRefs[ this.refSeqOrder[0] ];
+    console.log(this.refSeq);
 },
 
 
@@ -2103,6 +2105,7 @@ _updateLocationCookies: function( location ) {
     oldLocMap[this.refSeq.name] = { l: locString, t: Math.round( (new Date()).getTime() / 1000 ) - 1340211510 };
     oldLocMap = this._limitLocMap( oldLocMap, this.config.maxSavedLocations || 10 );
     this.cookie( 'location', dojo.toJson(oldLocMap), {expires: 60});
+    this.cookie('refseq', this.refSeq.name );
 },
 
 /**
