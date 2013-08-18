@@ -1676,12 +1676,15 @@ navigateTo: function(loc) {
     this.afterMilestone( 'initView', dojo.hitch( this, function() {
         // if it's a foo:123..456 location, go there
         var location = typeof loc == 'string' ? Util.parseLocString( loc ) :  loc;
-        if( location ) {
+        // only call navigateToLocation() directly if location has start and end, otherwise try and fill in start/end from 'location' cookie                        
+        if( location && ("start" in location) && ("end" in location)) {
             this.navigateToLocation( location );
         }
-        // otherwise, if it's just a word, try to figure out what it is
+        // otherwise, if it's just a word (or a location with only a ref property), try to figure out what it is
         else {
-
+            if (! (typeof loc == 'string')) { // if loc is location object rather than string, then reset loc to refSeq name
+                loc = loc.ref;
+            }
             // is it just the name of one of our ref seqs?
             var ref = Util.matchRefSeqName( loc, this.allRefs );
             if( ref ) {
@@ -2381,7 +2384,7 @@ createNavBox: function( parent ) {
 
                     // only trigger navigation if actually switching sequences
                     if( newRefName != this.refSeq.name ) {
-                        this.navigateToLocation({ ref: newRefName });
+                        this.navigateTo( newRefName );
                     }
                 })
             }).placeAt( refSeqSelectBoxPlaceHolder );
