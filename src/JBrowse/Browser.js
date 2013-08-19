@@ -958,6 +958,7 @@ makeGlobalMenu: function( menuName ) {
         menu.addChild( item );
     });
     dojo.addClass( menu.domNode, 'globalMenu' );
+    dojo.addClass( menu.domNode, menuName );
     menu.startup();
     return menu;
 },
