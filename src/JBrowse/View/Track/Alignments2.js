@@ -16,7 +16,7 @@ return declare( [ CanvasFeatureTrack, AlignmentsMixin ], {
         return Util.deepUpdate(
             dojo.clone( this.inherited(arguments) ),
             {
-                glyph: 'JBrowse/View/FeatureGlyph/Alignment',
+                glyph: 'JBrowse/View/FeatureGlyph/MultiSegmentAlignment',
                 maxFeatureGlyphExpansion: 0,
                 style: {
                     showLabels: false

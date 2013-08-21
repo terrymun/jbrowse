@@ -39,7 +39,7 @@ return declare( null,
     /**
      * @returns {Number} top position for the rect, or Null if laying out the rect would exceed maxHeight
      */
-    addRect: function( id, left, right, height, data ) {
+    addRect: function( id, left, right, height, data, forcedTop ) {
 
         // if we have already laid it out, return its layout
         if( id in this.rectangles ) {
@@ -62,6 +62,15 @@ return declare( null,
             rectangle.data = data;
 
         var maxTop = this.maxHeight - pHeight;
+
+        if( forcedTop !== undefined ) {
+            rectangle.top = forcedTop / this.pitchY;
+            this.rectangles[id] = rectangle;
+            this._addRectToBitmap( rectangle, data );
+            this.pTotalHeight = Math.max( this.pTotalHeight||0, forcedTop+pHeight );
+            return forcedTop;
+        }
+
         for(var top = 0; top <= maxTop; top++ ){
             if( ! this._collides( rectangle, top ) )
                 break;
