@@ -1674,6 +1674,10 @@ addOverviewTrack: function(track) {
     var trackDiv = document.createElement("div");
     trackDiv.className = "track";
     trackDiv.style.height = this.overviewBox.h + "px";
+    // GAH: Removing setting of style.left fixes bug that occurs when ref.start != 0 that leads to no coordinates shown in overview
+    // But, fixed version actually can look worse because coordinates rendered aren't necessarily multiple of 10, 100, etc.
+    // Therefore, leaving setting of styling.left in for now
+    trackDiv.style.left = (((-this.ref.start) / refLength) * this.overviewBox.w) + "px";
     trackDiv.id = "overviewtrack_" + track.name;
     trackDiv.track = track;
     var view = this;
