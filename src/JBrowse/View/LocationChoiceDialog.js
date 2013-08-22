@@ -70,7 +70,12 @@ return declare( null, {
                       className: 'show',
                       innerHTML: 'Show',
                       onClick: this.showCallback || function( location ) {
-                          browser.showRegionWithHighlight( location );
+                          if (browser.highlightButton.checked) {
+                              browser.showRegionWithHighlight( location );
+                          }
+                          else  {
+                              browser.showRegion( location );
+                          }
                       }
                   },
                   {
@@ -78,7 +83,12 @@ return declare( null, {
                       innerHTML: 'Go',
                       onClick: this.goCallback   || function( location ) {
                           dialog.hide();
-                          browser.showRegionWithHighlight( location );
+                          if (browser.highlightButton.checked) {
+                              browser.showRegionWithHighlight( location );
+                          }
+                          else {
+                              browser.showRegion( location );
+                          }
                       }
                   }
               ]

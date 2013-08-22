@@ -1824,10 +1824,14 @@ searchNames: function( /**String*/ loc ) {
 
                 // if it has one location, go to it
                 if( goingTo.location ) {
-
+                    if (thisB.highlightButton.checked) {
                         //go to location, with some flanking region
                         thisB.showRegionWithHighlight( goingTo.location );
                     }
+                    else  {
+                        thisB.showRegion( goingTo.location );
+                    }
+                }
                 // otherwise, pop up a dialog with a list of the locations to choose from
                 else if( goingTo.multipleLocations ) {
                     new LocationChoiceDialog(
