@@ -1697,6 +1697,9 @@ navigateTo: function(loc) {
         // only call navigateToLocation() directly if location has start and end, otherwise try and fill in start/end from 'location' cookie                        
         if( location && ("start" in location) && ("end" in location)) {
             this.navigateToLocation( location );
+            if (this.highlightButton.checked) {
+                this.setHighlightAndRedraw( location );
+            }
         }
         // otherwise, if it's just a word (or a location with only a ref property), try to figure out what it is
         else {
