@@ -15,11 +15,18 @@ return declare( [AlignmentGlyph], {
 
     _getTemplateRectangle: function( viewInfo, feature ) {
         var block = viewInfo.block;
+        if( !block.templateRectangle )
+            block.templateRectangle = {};
+
         var start;
         var end;
         var id;
         if( feature.get('multi_segment_template') && !feature.get('multi_segment_next_segment_unmapped') ) {
             id = feature.get('name');
+
+            if( block.templateRectangle[id])
+                return block.templateRectangle[id];
+
             if( feature.get('template_length') > 0) {
                 start = feature.get('start');
                 end = feature.get('start') + feature.get('template_length');
@@ -71,31 +78,37 @@ return declare( [AlignmentGlyph], {
         this._expandRectangleWithLabels( viewInfo, feature, tRect );
         this._addMasksToRect( viewInfo, feature, tRect );
 
+        tRect.rendered = false;
+        block.templateRectangle[id] = tRect;
+
         return tRect;
 
     },
 
     renderFeature: function( context, fRect ) {
-        if( this.track.displayMode != 'collapsed' )
+        if( this.track.displayMode != 'collapsed' ) {
             context.clearRect( Math.floor(fRect.l), fRect.t, Math.ceil(fRect.w-Math.floor(fRect.l)+fRect.l), fRect.h );
-        //this.renderConnector( context, fRect );
+        }
+        this.renderConnector( context, fRect );
         this.inherited( arguments );
     },
 
     renderConnector: function( context, fRect ) {
         // connector
         var tRect = fRect.tRect;
-
-        var connectorColor = 'rgb(0, 255, 0)';
-        if( connectorColor ) {
-            context.fillStyle = connectorColor;
-            var connectorThickness = 1;
-            context.fillRect(
-                tRect.rect.l, // left
-                Math.round(tRect.rect.t+(tRect.rect.h-connectorThickness)/2), // top
-                tRect.rect.w, // width
-                connectorThickness
-            );
+        if( !tRect.rendered ) {
+            tRect.rendered = true;
+            var connectorColor = 'rgb(0, 255, 0)';
+            if( connectorColor ) {
+                context.fillStyle = connectorColor;
+                var connectorThickness = 1;
+                context.fillRect(
+                    tRect.rect.l, // left
+                    Math.round(tRect.rect.t+(tRect.rect.h-connectorThickness)/2), // top
+                    tRect.rect.w, // width
+                    connectorThickness
+                );
+            }
         }
     },
 
