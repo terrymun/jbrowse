@@ -38,7 +38,7 @@ var XYPlot = declare( [WiggleBase, YScaleMixin],
         this._getScalingStats( viewArgs, dojo.hitch(this, function( stats ) {
 
             //calculate the scaling if necessary
-            if( ! this.lastScaling || ! this.lastScaling.sameStats( stats ) ) {
+            if( ! this.lastScaling || ! this.lastScaling.sameStats( stats ) || this.trackHeightChanged ) {
 
                 var scaling = new Scale( this.config, stats );
 
@@ -59,6 +59,7 @@ var XYPlot = declare( [WiggleBase, YScaleMixin],
                 scaling.range = scaling.max - scaling.min;
 
                 this.lastScaling = scaling;
+                this.trackHeightChanged=false; //reset flag
             }
 
             successCallback( this.lastScaling );
@@ -77,8 +78,16 @@ var XYPlot = declare( [WiggleBase, YScaleMixin],
     _drawFeatures: function( scale, leftBase, rightBase, block, canvas, pixels, dataScale ) {
         var context = canvas.getContext('2d');
         var canvasHeight = canvas.height;
+        var devicePixelRatio = window.devicePixelRatio || 1; 
+        var backingStoreRatio = context.webkitBackingStorePixelRatio || 
+                                                context.mozBackingStorePixelRatio || 
+                                                context.msBackingStorePixelRatio || 
+                                                context.oBackingStorePixelRatio || 
+                                                context.backingStorePixelRatio || 1; 
+ 
+        var ratio = devicePixelRatio / backingStoreRatio;
         var toY = dojo.hitch( this, function( val ) {
-           return canvasHeight * ( 1-dataScale.normalize(val) );
+           return canvasHeight * ( 1-dataScale.normalize(val) ) / ratio;
         });
         var originY = toY( dataScale.origin );
 
@@ -181,8 +190,16 @@ var XYPlot = declare( [WiggleBase, YScaleMixin],
     _postDraw: function( scale, leftBase, rightBase, block, canvas, features, featureRects, dataScale ) {
         var context = canvas.getContext('2d');
         var canvasHeight = canvas.height;
+        var devicePixelRatio = window.devicePixelRatio || 1; 
+        var backingStoreRatio = context.webkitBackingStorePixelRatio || 
+                                                context.mozBackingStorePixelRatio || 
+                                                context.msBackingStorePixelRatio || 
+                                                context.oBackingStorePixelRatio || 
+                                                context.backingStorePixelRatio || 1; 
+ 
+        var ratio = devicePixelRatio / backingStoreRatio;
         var toY = dojo.hitch( this, function( val ) {
-           return canvasHeight * (1-dataScale.normalize(val));
+           return canvasHeight * ( 1-dataScale.normalize(val) ) / ratio;
         });
 
         // draw the variance_band if requested
