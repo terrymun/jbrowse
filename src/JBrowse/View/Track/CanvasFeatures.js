@@ -513,6 +513,8 @@ return declare(
         var leftBase = args.leftBase;
         var rightBase = args.rightBase;
         var finishCallback = args.finishCallback;
+        console.log("leftBase: "+leftBase);
+        console.log("rightBase: "+rightBase);
 
         var fRects = [];
 
@@ -537,7 +539,7 @@ return declare(
         // (long labels that extend outside the feature's bounds, for
         // example)
         var bpExpansion = Math.round( this.config.maxFeatureGlyphExpansion / scale );
-
+        
         var region = { ref: this.refSeq.name,
                        start: Math.max( 0, leftBase - bpExpansion ),
                        end: rightBase + bpExpansion
