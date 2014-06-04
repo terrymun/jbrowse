@@ -14,6 +14,7 @@ define( [
             'dojo/_base/array',
             'dijit/layout/ContentPane',
             'dijit/layout/BorderContainer',
+            'dijit/layout/TabContainer',
             'dijit/Dialog',
             'dijit/form/ComboBox',
             'dijit/form/Button',
@@ -57,6 +58,7 @@ define( [
             array,
             dijitContentPane,
             dijitBorderContainer,
+            dijitTabContainer,
             dijitDialog,
             dijitComboBox,
             dijitButton,
@@ -1696,7 +1698,7 @@ initTrackMetadata: function( callback ) {
 },
 
 /**
- * Asynchronously create the track list.
+ * Asynchronously create the track list and tabcontainer.
  * @private
  */
 createTrackList: function() {
@@ -1711,6 +1713,12 @@ createTrackList: function() {
         // load all the classes we need
         require( [ tl_class ],
                  dojo.hitch( this, function( trackListClass ) {
+                     var blank=new dojo.create('div', null, 'GenomeBrowser')
+                     this.tabContainer = new dijitTabContainer({
+                         style: "height: 100%; width: 25%; ",
+                         region: "left",
+                         splitter: true
+                             }, blank);
                      // instantiate the tracklist and the track metadata object
                      this.trackListView = new trackListClass(
                          dojo.mixin(
@@ -1718,10 +1726,14 @@ createTrackList: function() {
                              {
                                  trackConfigs: this.config.tracks,
                                  browser: this,
-                                 trackMetaData: this.trackMetaDataStore
+                                 trackMetaData: this.trackMetaDataStore,
+                                 title: "Tracks"
                              }
                          )
                      );
+
+                     this.tabContainer.addChild(this.trackListView);
+                     this.tabContainer.startup();
 
                      // bind the 't' key as a global keyboard shortcut
                      this.setGlobalKeyboardShortcut( 't', this.trackListView, 'toggle' );
