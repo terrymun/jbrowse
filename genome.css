@@ -14,6 +14,7 @@
 /* CSS styles for the various types of feature glyphs */
 @import url("track_styles.css");
 @import url("hierarchical_track_selector.css");
+@import url("bookmark_panel.css");
 @import url("faceted_track_selector.css");
 
 

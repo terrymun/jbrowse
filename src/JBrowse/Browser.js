@@ -39,6 +39,7 @@ define( [
             'JBrowse/View/Dialog/SetHighlight',
             'JBrowse/View/Dialog/SetTrackHeight',
             'JBrowse/View/Dialog/QuickHelp',
+            'JBrowse/View/Panel/Bookmarks',
             'JBrowse/View/StandaloneDatasetList',
             'dijit/focus',
             'lazyload', // for dynamic CSS loading
@@ -83,6 +84,7 @@ define( [
             SetHighlightDialog,
             SetTrackHeightDialog,
             HelpDialog,
+            BookmarkPanel,
             StandaloneDatasetList,
             dijitFocus,
             LazyLoad
@@ -1732,7 +1734,18 @@ createTrackList: function() {
                          )
                      );
 
+                     this.bookmarkView = new BookmarkPanel(
+                         dojo.mixin(
+                             dojo.clone( this.config.bookmarkPanel ) || {},
+                             {
+                                 browser: this,
+                                 title: "Bookmarks"
+                             }
+                         )
+                     );
+
                      this.tabContainer.addChild(this.trackListView);
+                     this.tabContainer.addChild(this.bookmarkView);
                      this.tabContainer.startup();
 
                      // bind the 't' key as a global keyboard shortcut
