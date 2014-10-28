@@ -29,6 +29,7 @@ sub option_definitions {(
     "nclChunk=i",
     "compress",
     "sortMem=i",
+    "inferCDS",
     "verbose|v+",
     "quiet|q",
     "help|?|h"
@@ -74,6 +75,7 @@ sub run {
     }
     $db->strict_bounds_checking(1) if $db->can('strict_bounds_checking');
     $db->absolute(1)               if $db->can('absolute');
+    $db->inferCDS(1)               if $self->opt('inferCDS');
 
     foreach my $seg (@refSeqs) {
         my $segName = $seg->{name};

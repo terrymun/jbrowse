@@ -27,7 +27,8 @@ defined in it.
     [--ref <ref seq names> | --refid <ref seq ids>]  \
     [--track <track name>]                           \
     [--out <output directory>]                       \
-    [--compress]
+    [--compress]                                     \
+    [--inferCDS]
 
 
   # format the example volvox track data
@@ -62,6 +63,10 @@ Directory where output should go.  Default: data/
 =item --compress
 
 If passed, compress the output with gzip (requires some web server configuration to serve properly).
+
+=item --inferCDS
+
+If passed, use the inferCDS option (used by Bio::DB::Das::Chado)
 
 =back
 
