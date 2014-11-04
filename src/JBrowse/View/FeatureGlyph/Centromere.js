@@ -1,53 +1,61 @@
 define([
            'dojo/_base/declare',
            './Box',
-           'dojo/_base/lang'
+           'dojo/_base/lang',
+           'JBrowse/Util'
        ],
        function(
            declare,
            BoxGlyph,
-           lang
+           lang,
+           Util
        ) {
 
 return declare([ BoxGlyph ], {
-    configSchema: {
-        slots: [
-            { name: 'color', defaultValue: '#8B2323', type: 'Color'},
-            { name: 'height', defaultValue: 30, type: 'float' },
-            { name: 'borderColor', defaultValue: 'black', type: 'Color' },
-            { name: 'borderWidth', defaultValue: 1, type: 'float' }
-        ]
+    _defaultConfig: function() {
+        return Util.deepUpdate(
+          lang.clone( this.inherited(arguments) ),
+            {
+              'height': 30,
+              'style': {
+                  'color': '#8B2323',
+                  'borderColor': 'black',
+                  'borderWidth': 1
+              }
+            });
     },
 
     renderBox: function( context, viewInfo, feature, top, overallHeight, parentFeature, style ) {
         var left  = viewInfo.block.bpToX( feature.get('start') );
         var width = viewInfo.block.bpToX( feature.get('end') ) - left;
 
+        //style=this.config.style;
         style = style || lang.hitch( this, 'getStyle' );
 
-        var height = this.getFeatureHeight( viewInfo, feature );
+        var height = this.config.height;
         if( ! height )
             return;
         if( height != overallHeight )
             top += Math.round( (overallHeight - height)/2 );
         
         if (width < 500){
-            this._drawTriangle(left, top, width, height, feature.data.pos, context, style, feature);
-            this._drawBorder(left, top, width, height, feature.data.pos, context, style, feature);
+            this._drawTriangle(left, top, width, height, feature.get('pos'), context, style, feature);
+            this._drawBorder(left, top, width, height, feature.get('pos'), context, style, feature);
         }
         else {
-            this._drawRepeatingArrows(left, top, width, height, feature.data.pos, context, style, feature);
+            this._drawRepeatingArrows(left, top, width, height, feature.get('pos'), context, style, feature);
         }
 
     },
     // background
     _drawTriangle: function(left, top, width, height, direction, context, style, feature){ 
-        if( bgcolor = style( feature, 'color' )) {
-            context.fillStyle = bgcolor.toString();
+        if( bgcolor = this.config.style.color) {
+            context.fillStyle = this.config.style.color;
             this._doPoints(left, top, width, height, direction, context);
             context.fill();
         }
         else {
+
             context.clearRect( left, top, Math.max(1,width), height );
         }
     },
@@ -55,7 +63,7 @@ return declare([ BoxGlyph ], {
     // foreground border
     _drawBorder: function(left, top, width, height, direction, context, style, feature){
         var borderColor, lineWidth;
-        if( (borderColor = style( feature, 'borderColor' )) && ( lineWidth = style( feature, 'borderWidth')) ) {
+        if( (borderColor = this.config.style.borderColor) && ( lineWidth = this.config.style.borderWidth) ) {
             if( width > 3 ) {
                 context.lineWidth = lineWidth;
                 context.strokeStyle = borderColor.toString();
