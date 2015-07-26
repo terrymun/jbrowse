@@ -7,8 +7,11 @@ gulp.task('uglify', function() {
   return gulp.src([
     'src/**/*.js','src/**/**/*.js',
     '*.css','src/**/*.css','src/**/**/*.css',
-    '*.html','src/**/*.html','src/**/**/*.html'
-    '*.conf','*.json'
+    '*.html','src/**/*.html','src/**/**/*.html',
+    '*.png','src/**/*.png','src/**/**/*.png',
+    '*.gif','src/**/*.gif','src/**/**/*.gif',
+    '*.jpg','src/**/*.jpg','src/**/**/*.jpg',
+    '*.conf','*.json',
   ])
   //.pipe(gulp_concat('concat.js'))
   //.pipe(gulp.dest('dist'))
