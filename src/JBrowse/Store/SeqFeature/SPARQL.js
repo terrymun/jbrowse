@@ -90,7 +90,7 @@ return declare( [ SeqFeatureStore, DeferredStatsMixin, GlobalStatsEstimationMixi
                                                             query: this._makeQuery( query )
                                                         }),
                      {
-                          headers: { "Accept": "application/json" },
+                          headers: { "Accept": "application/json","X-Requested-With": this.config.disablePreflight?null:true },
                           handleAs: "json",
                           failOk: true
                      })
